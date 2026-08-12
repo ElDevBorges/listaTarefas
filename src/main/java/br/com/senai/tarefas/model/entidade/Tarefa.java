@@ -24,6 +24,7 @@ public class Tarefa {
     private String descricao;
 
     @Column (nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private StatusTarefa status;
 
     @Column (nullable = false)

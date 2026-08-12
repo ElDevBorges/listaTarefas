@@ -24,6 +24,8 @@ public class TarefaService {
         novaTarefa.setStatus(StatusTarefa.PENDENTE);
         novaTarefa.setDataCriacao(dataCriacao);
 
+        System.out.println("aaa");
+
         tarefaRepository.save(novaTarefa);
 
 
@@ -38,10 +40,15 @@ public class TarefaService {
 
     }
 
-    public List<Tarefa> listar (long id) {
-        List <Tarefa> tarefas = tarefaRepository.findAll();
-        return tarefas;
+    public List<TarefaResponseDTO> listar () {
+        return tarefaRepository.findAll()
+                .stream()
+                .map(this::convertDTO)
+                .toList();
+    }
 
+    private TarefaResponseDTO convertDTO (Tarefa tarefa) {
+        return new TarefaResponseDTO(tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus());
     }
 
 
