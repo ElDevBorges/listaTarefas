@@ -1,16 +1,20 @@
 package br.com.senai.tarefas.model.entidade;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Table
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Tarefa {
 
     @Id
@@ -30,11 +34,11 @@ public class Tarefa {
     @Column (nullable = false)
     private LocalDate dataCriacao;
 
-    public Tarefa () {}
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id")
+    @Column(nullable = false)
+    private Pessoa pessoa;
 
-    public void Tarefa(String descricao) {
-        this.descricao = descricao;
-    }
 
 
 }

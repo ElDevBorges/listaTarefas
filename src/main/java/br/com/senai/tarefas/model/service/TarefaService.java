@@ -1,7 +1,9 @@
 package br.com.senai.tarefas.model.service;
 
-import br.com.senai.tarefas.model.CadastrarTarefaDTO;
-import br.com.senai.tarefas.model.TarefaRepository;
+import br.com.senai.tarefas.model.dto.AtualizarTarefaDTO;
+import br.com.senai.tarefas.model.dto.CadastrarTarefaDTO;
+import br.com.senai.tarefas.repository.TarefaRepository;
+import br.com.senai.tarefas.model.dto.TarefaResponseDTO;
 import br.com.senai.tarefas.model.entidade.StatusTarefa;
 import br.com.senai.tarefas.model.entidade.Tarefa;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,6 @@ public class TarefaService {
         novaTarefa.setStatus(StatusTarefa.PENDENTE);
         novaTarefa.setDataCriacao(dataCriacao);
 
-        System.out.println("aaa");
 
         tarefaRepository.save(novaTarefa);
 
@@ -48,8 +49,16 @@ public class TarefaService {
     }
 
     private TarefaResponseDTO convertDTO (Tarefa tarefa) {
-        return new TarefaResponseDTO(tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus());
+        return new TarefaResponseDTO(tarefa.getId(), tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus());
     }
+
+    public void atualizar(AtualizarTarefaDTO atualizarTarefaDTO) {
+        var tarefaEncontrada = tarefaRepository.findById(atualizarTarefaDTO.id())
+                .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
+
+    }
+
+
 
 
 
