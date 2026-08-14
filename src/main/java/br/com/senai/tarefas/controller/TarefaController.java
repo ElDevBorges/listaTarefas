@@ -3,7 +3,6 @@ package br.com.senai.tarefas.controller;
 import br.com.senai.tarefas.model.dto.CadastrarTarefaDTO;
 import br.com.senai.tarefas.model.dto.TarefaResponseDTO;
 import br.com.senai.tarefas.model.service.TarefaService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/tarefas")
-public class tarefaController {
+public class TarefaController {
 
     private final TarefaService tarefaService;
 
-    public tarefaController(TarefaService tarefaService) {
+    public TarefaController(TarefaService tarefaService) {
         this.tarefaService = tarefaService;
     }
 

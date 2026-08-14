@@ -36,7 +36,6 @@ public class Tarefa {
 
     @ManyToOne
     @JoinColumn(name = "pessoa_id")
-    @Column(nullable = false)
     private Pessoa pessoa;
 
 
