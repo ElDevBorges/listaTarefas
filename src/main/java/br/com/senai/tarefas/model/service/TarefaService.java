@@ -1,7 +1,9 @@
 package br.com.senai.tarefas.model.service;
 
+import br.com.senai.tarefas.exceptions.RecursoNaoEncontradoException;
 import br.com.senai.tarefas.model.dto.AtualizarTarefaDTO;
 import br.com.senai.tarefas.model.dto.CadastrarTarefaDTO;
+import br.com.senai.tarefas.repository.PessoaRepository;
 import br.com.senai.tarefas.repository.TarefaRepository;
 import br.com.senai.tarefas.model.dto.TarefaResponseDTO;
 import br.com.senai.tarefas.model.entidade.StatusTarefa;
@@ -16,15 +18,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TarefaService {
     private final TarefaRepository tarefaRepository;
+    private final PessoaRepository pessoaRepository;
 
     public void cadastrar (CadastrarTarefaDTO cadastrarTarefaDTO) {
+        var pessoa = pessoaRepository.findById (cadastrarTarefaDTO.id())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("não encontrado"));
+
+
         Tarefa novaTarefa = new Tarefa();
         var dataCriacao = LocalDate.now();
 
+        novaTarefa.setPessoa(pessoa);
         novaTarefa.setTitulo(cadastrarTarefaDTO.titulo());
         novaTarefa.setDescricao(cadastrarTarefaDTO.descricao());
         novaTarefa.setStatus(StatusTarefa.PENDENTE);
         novaTarefa.setDataCriacao(dataCriacao);
+        pessoa.getTarefas().add(novaTarefa);
 
 
         tarefaRepository.save(novaTarefa);
@@ -48,8 +57,14 @@ public class TarefaService {
                 .toList();
     }
 
+    public List<TarefaResponseDTO> listarPorId (Long id) {
+        var pessoa = pessoaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("não encontrado"));
+        return tarefaRepository.findById(pessoa.getId());
+    }
+
     private TarefaResponseDTO convertDTO (Tarefa tarefa) {
-        return new TarefaResponseDTO(tarefa.getId(), tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus());
+        return new TarefaResponseDTO(tarefa.getId(), tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus(), tarefa.getPessoa().getId());
     }
 
     public void atualizar(AtualizarTarefaDTO atualizarTarefaDTO) {

@@ -29,6 +29,6 @@ public class Pessoa {
     @Email
     private String email;
 
-    @OneToMany (mappedBy = "pessoa")
+    @OneToMany (mappedBy = "pessoa", cascade = CascadeType.ALL)
     private List<Tarefa> tarefas = new ArrayList<>();
 }
