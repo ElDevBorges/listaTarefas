@@ -2,6 +2,7 @@ package br.com.senai.tarefas.controller;
 
 import br.com.senai.tarefas.model.dto.CadastrarTarefaDTO;
 import br.com.senai.tarefas.model.dto.TarefaResponseDTO;
+import br.com.senai.tarefas.model.dto.TarefaResponseListarTarefaDTO;
 import br.com.senai.tarefas.model.service.TarefaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class TarefaController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<TarefaResponseDTO>> listarTarefas () {
+    public ResponseEntity<List<TarefaResponseListarTarefaDTO>> listarTarefas () {
         return ResponseEntity.ok(tarefaService.listar());
     }
 }

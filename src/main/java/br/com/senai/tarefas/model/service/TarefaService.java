@@ -3,6 +3,7 @@ package br.com.senai.tarefas.model.service;
 import br.com.senai.tarefas.exceptions.RecursoNaoEncontradoException;
 import br.com.senai.tarefas.model.dto.AtualizarTarefaDTO;
 import br.com.senai.tarefas.model.dto.CadastrarTarefaDTO;
+import br.com.senai.tarefas.model.dto.TarefaResponseListarTarefaDTO;
 import br.com.senai.tarefas.repository.PessoaRepository;
 import br.com.senai.tarefas.repository.TarefaRepository;
 import br.com.senai.tarefas.model.dto.TarefaResponseDTO;
@@ -50,21 +51,25 @@ public class TarefaService {
 
     }
 
-    public List<TarefaResponseDTO> listar () {
+    public List<TarefaResponseListarTarefaDTO> listar () {
         return tarefaRepository.findAll()
                 .stream()
                 .map(this::convertDTO)
                 .toList();
     }
 
-    public List<TarefaResponseDTO> listarPorId (Long id) {
+    public List<TarefaResponseListarTarefaDTO> listarPorId (Long id) {
         var pessoa = pessoaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("não encontrado"));
-        return tarefaRepository.findById(pessoa.getId());
+
+        return tarefaRepository.findById(pessoa.getId())
+                .stream()
+                .map(this::convertDTO)
+                .toList();
     }
 
-    private TarefaResponseDTO convertDTO (Tarefa tarefa) {
-        return new TarefaResponseDTO(tarefa.getId(), tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus(), tarefa.getPessoa().getId());
+    public TarefaResponseListarTarefaDTO convertDTO (Tarefa tarefa) {
+        return new TarefaResponseListarTarefaDTO(tarefa.getId(), tarefa.getTitulo(), tarefa.getDescricao(), tarefa.getStatus(), tarefa.getPessoa().getId());
     }
 
     public void atualizar(AtualizarTarefaDTO atualizarTarefaDTO) {

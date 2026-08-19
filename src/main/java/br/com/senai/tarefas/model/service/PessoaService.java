@@ -34,20 +34,29 @@ public class PessoaService {
         return pessoaRepository.save(novaPessoa);
     }
 
-    public List<PessoaResponseDTO> listarPessoas () {
-        return pessoaRepository.findAll()
-                .stream()
-                .map(this::convertDTO)
+    public List<PessoaResponseDTO> listarPessoas() {
+        List<Pessoa> pessoas = pessoaRepository.findAll();
+
+        return pessoas.stream()
+                .map(pessoa -> new PessoaResponseDTO(
+                        pessoa.getId(),
+                        pessoa.getNome(),
+                        pessoa.getEmail(),
+
+                        pessoa.getTarefas().stream()
+                                .map(tarefa -> new TarefaResponseDTO(
+                                        tarefa.getId(),
+                                        tarefa.getTitulo(),
+                                        tarefa.getDescricao(),
+                                        tarefa.getStatus()
+                                ))
+                                .toList()
+                ))
                 .toList();
     }
 
-    private PessoaResponseDTO convertDTO (Pessoa pessoa){
 
-        return new PessoaResponseDTO(pessoa.getId(), pessoa.getNome(), pessoa.getEmail(), pessoa.getTarefas());
 
-    }
-
-    tarefaService.
     public void atualizar(Long id, AtualizarPessoaDTO atualizarPessoaDTO) {
         var pessoaEncontrada = pessoaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException ("Não encontrado"));
