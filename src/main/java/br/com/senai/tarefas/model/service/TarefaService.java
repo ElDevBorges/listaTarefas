@@ -51,6 +51,13 @@ public class TarefaService {
 
     }
 
+    public void excluir(long id) {
+        var tarefaEncontrada = tarefaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("tarefa nao encontrada"));
+
+        tarefaRepository.delete(tarefaEncontrada);
+    }
+
     public List<TarefaResponseListarTarefaDTO> listar () {
         return tarefaRepository.findAll()
                 .stream()

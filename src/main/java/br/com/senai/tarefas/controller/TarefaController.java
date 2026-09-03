@@ -36,4 +36,7 @@ public class TarefaController {
     public ResponseEntity<List<TarefaResponseListarTarefaDTO>> listarTarefas () {
         return ResponseEntity.ok(tarefaService.listar());
     }
+
+    @DeleteMapping("/excluir/{id}")
+    public void excluirTarefa(@PathVariable Long id) {tarefaService.excluir(id);}
 }
